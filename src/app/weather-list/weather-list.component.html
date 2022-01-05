@@ -1,0 +1,44 @@
+<!-- <h4>Template for main page:</h4> -->
+<div class="container-fluid">
+
+<div class="well">
+  <form #zipCode ="ngForm" (ngSubmit)="onSubmit(zipCode)" >
+  <h2>Enter a zipcode:</h2>
+  <input class="form-control" placeholder="Zipcode" type="number" name="zipcode" id="addLocation" #zipcontrol="ngModel" ngModel required>
+  
+  <span *ngIf="!zipcontrol.valid && zipcontrol.touched" class="errorMsg"> Please Enter the ZipCode!</span>
+  <br>
+  <button class="btn btn-primary" id="addLocationBtn" [disabled]="zipCode.invalid">
+    Add location
+  </button>
+</form>
+</div>
+<div >
+<ng-container *ngIf="zipData.length > 0;">
+<div class="well flex" *ngFor="let weather of zipData; let i = index">
+    <div>
+      <h3>{{weather.cityName}} ({{weather.zipcode}})</h3>
+      <h4>Current conditions: {{weather.currentCondition}}</h4>
+      <h4>Temperatures today: {{weather.feelsLike}}</h4>
+      <p>
+        Current {{weather.currentTemp}}
+        - Max {{weather.maxTemp}}
+        - Min {{weather.minTemp}}
+      </p>
+      <p>
+        <a [routerLink]="['/forecast',weather.zipcode]">Show 5-day forecast for {{weather.cityName}}</a>
+      </p>
+    </div>
+    <div>
+      <span class="close" (click)="removeCode(i)" style="cursor: pointer;">×</span>
+      <img [src]="getImage(weather.currentCondition)" alt="{{weather.currentCondition}}">
+
+    </div>
+ </div>
+</ng-container>
+<ng-container *ngIf="zipData.length == 0;">
+  <p>No cities found, Add locations!</p>
+  </ng-container> 
+</div>
+
+</div>
